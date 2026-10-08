@@ -46,13 +46,13 @@ function ProductPage() {
   return (
     <div className="mx-auto grid max-w-[1200px] gap-10 px-4 py-10 sm:px-6 md:grid-cols-2">
       <div>
-        <div className="aspect-square overflow-hidden bg-muted">
+        <div className="aspect-square overflow-hidden rounded-3xl bg-muted">
           {images[img] && <img src={images[img].url} alt={images[img].altText ?? p.title} className="size-full object-cover" />}
         </div>
         {images.length > 1 && (
           <div className="mt-3 flex gap-2">
             {images.map((im, i) => (
-              <button key={im.url} onClick={() => setImg(i)} className={`size-20 overflow-hidden border-2 ${i === img ? "border-accent" : "border-transparent"}`}>
+              <button key={im.url} onClick={() => setImg(i)} className={`size-20 overflow-hidden rounded-xl border-2 ${i === img ? "border-accent" : "border-transparent"}`}>
                 <img src={im.url} alt="" className="size-full object-cover" />
               </button>
             ))}
@@ -71,7 +71,7 @@ function ProductPage() {
           </div>
         )}
         <div className="mt-8 flex gap-3">
-          <div className="flex items-center border border-border">
+          <div className="flex items-center rounded-full border border-border">
             <Button size="icon" variant="ghost" onClick={() => setQty(qty + 1)} aria-label="زيادة"><Plus className="size-4" /></Button>
             <span className="w-8 text-center font-bold">{qty}</span>
             <Button size="icon" variant="ghost" onClick={() => setQty(Math.max(1, qty - 1))} aria-label="تقليل"><Minus className="size-4" /></Button>

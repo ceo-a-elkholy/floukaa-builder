@@ -25,7 +25,7 @@ function Index() {
 
   return (
     <>
-      <section className="relative overflow-hidden">
+      <section className="relative mx-auto mt-4 max-w-[1400px] overflow-hidden rounded-3xl px-0 sm:mx-6 xl:mx-auto">
         <img src={hero} alt="إكسسوارات فلوكة" width={1920} height={1088} className="h-[70vh] min-h-[420px] w-full object-cover" />
         <div className="absolute inset-0 flex items-center">
           <div className="mx-auto w-full max-w-[1400px] px-6">
@@ -47,7 +47,7 @@ function Index() {
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
           {CATEGORIES.filter((c) => c.img).map((c) => (
             <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="group block">
-              <div className="aspect-square overflow-hidden bg-muted">
+              <div className="aspect-square overflow-hidden rounded-3xl bg-muted shadow-soft">
                 <img src={c.img} alt={c.title} loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
               </div>
               <p className="mt-3 text-center text-lg font-black">{c.title}</p>
@@ -74,7 +74,7 @@ function Index() {
         {[[Truck, "شحن لكل مصر", "توصيل لجميع المحافظات"], [Gift, "تغليف هدايا", "جاهزة تتهادى على طول"], [ShieldCheck, "استبدال سهل", "خلال 14 يوم من الاستلام"]].map(([I, t, d]) => {
           const Icon = I as typeof Truck;
           return (
-            <div key={t as string} className="flex items-center gap-4 border border-border bg-card p-6">
+            <div key={t as string} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft">
               <Icon className="size-8 text-accent" />
               <div><p className="font-black">{t as string}</p><p className="text-sm text-muted-foreground">{d as string}</p></div>
             </div>
