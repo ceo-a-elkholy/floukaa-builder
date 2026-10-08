@@ -20,7 +20,7 @@ function Index() {
   const [products, setProducts] = useState<ShopifyProduct[] | null>(null);
   useEffect(() => {
     setProducts(null);
-    void getProducts(10, tabs[tab][1] || undefined).then(setProducts).catch(() => setProducts([]));
+    void getProducts(10, tabs[tab]?.[1] || undefined).then(setProducts).catch(() => setProducts([]));
   }, [tab]);
 
   return (
