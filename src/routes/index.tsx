@@ -5,17 +5,21 @@ import { Button } from "@/components/ui/button";
 import { ProductCard } from "@/components/store/product-card";
 import { getProducts, type ShopifyProduct } from "@/lib/shopify";
 import { CATEGORIES } from "@/lib/categories";
+import { CategoryMap } from "@/components/store/category-map";
 import { meta } from "@/lib/seo";
 import hero from "@/assets/hero.jpg";
+import { motion } from "motion/react";
+import { Reveal, Stagger, StaggerItem } from "@/components/store/motion";
 
 export const Route = createFileRoute("/")({
   head: () => meta("Floukaa — فلوكة للإكسسوارات والهدايا", "سلاسل، أساور، حلقان وخلاخيل بتصميمات جديدة. شحن لجميع محافظات مصر."),
   component: Index,
 });
 
-const tabs = [["وصل حديثًا", "tag:new"], ["متميز", "tag:featured"], ["الكل", ""]] as const;
+const tabs = [["وصل حديثًا", "tag:new"], ["الأكثر مبيعًا", "tag:best"], ["متميز", "tag:featured"], ["عروض", "tag:sale"]] as const;
 
 function Index() {
+  const [showMap, setShowMap] = useState(false);
   const [tab, setTab] = useState(0);
   const [products, setProducts] = useState<ShopifyProduct[] | null>(null);
   useEffect(() => {
@@ -25,62 +29,82 @@ function Index() {
 
   return (
     <>
-      <section className="relative mx-auto mt-4 max-w-[1400px] overflow-hidden rounded-3xl px-0 sm:mx-6 xl:mx-auto">
-        <img src={hero} alt="إكسسوارات فلوكة" width={1920} height={1088} className="h-[70vh] min-h-[420px] w-full object-cover" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="mx-auto w-full max-w-[1400px] px-6">
-            <div className="max-w-md">
-              <p className="text-xs font-bold tracking-[0.3em] text-accent">NEW EXCLUSIVE COLLECTION</p>
-              <h1 className="mt-4 text-4xl font-black leading-tight sm:text-6xl">تشكيلة صيفية جديدة</h1>
-              <p className="mt-4 text-muted-foreground">تصميمات حصرية مستوحاة من البحر، مختارة بذوق لكل مناسبة.</p>
-              <Button asChild size="lg" className="mt-8"><Link to="/shop">تسوقي الآن</Link></Button>
-            </div>
+      <section className="relative mx-3 mt-3 max-w-[1400px] overflow-hidden rounded-3xl sm:mx-6 sm:mt-4 xl:mx-auto">
+        <motion.img initial={{ scale: 1.12 }} animate={{ scale: 1 }} transition={{ duration: 1.6, ease: [0.22, 1, 0.36, 1] }} src={hero} alt="إكسسوارات فلوكة" width={1920} height={1088} className="h-[62svh] min-h-[380px] w-full object-cover sm:h-[70vh] sm:min-h-[460px]" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-transparent sm:bg-gradient-to-l sm:from-background/85 sm:via-background/40" />
+        <div className="absolute inset-0 flex items-end sm:items-center">
+          <div className="mx-auto w-full max-w-[1400px] px-5 pb-8 sm:px-10 sm:pb-0">
+            <motion.div initial="hidden" animate="show" variants={{ hidden: {}, show: { transition: { staggerChildren: 0.12, delayChildren: 0.3 } } }} className="max-w-md">
+              {[
+                <p key="a" className="text-[10px] font-bold text-accent sm:text-xs">NEW EXCLUSIVE COLLECTION</p>,
+                <h1 key="b" className="mt-3 text-3xl font-black leading-tight sm:mt-4 sm:text-6xl">تشكيلة صيفية جديدة</h1>,
+                <p key="c" className="mt-3 text-sm text-muted-foreground sm:mt-4 sm:text-base">تصميمات حصرية مستوحاة من البحر، مختارة بذوق لكل مناسبة.</p>,
+                <Button key="d" asChild size="lg" className="mt-6 sm:mt-8"><Link to="/shop">تسوقي الآن</Link></Button>,
+              ].map((el, i) => (
+                <motion.div key={i} variants={{ hidden: { opacity: 0, y: 24 }, show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } } }}>{el}</motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
 
-      <section className="mx-auto max-w-[1400px] px-4 py-16 sm:px-6">
-        <div className="mb-8 text-center">
+      <section className="mx-auto max-w-[1400px] px-4 py-12 sm:px-6 sm:py-16">
+        <Reveal className="mb-8 text-center">
           <p className="text-xs font-bold text-accent">تشكيلات جديدة صيفية</p>
-          <h2 className="mt-2 text-3xl font-black">تسوقي حسب القسم</h2>
-        </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <h2 className="mt-2 text-2xl font-black sm:text-3xl">تسوقي حسب القسم</h2>
+        </Reveal>
+        <Stagger className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-4">
           {CATEGORIES.filter((c) => c.img).map((c) => (
-            <Link key={c.slug} to="/category/$slug" params={{ slug: c.slug }} className="group block">
-              <div className="aspect-square overflow-hidden rounded-3xl bg-muted shadow-soft">
-                <img src={c.img} alt={c.title} loading="lazy" className="size-full object-cover transition duration-500 group-hover:scale-105" />
-              </div>
-              <p className="mt-3 text-center text-lg font-black">{c.title}</p>
-            </Link>
+            <StaggerItem key={c.slug}>
+              <Link to="/category/$slug" params={{ slug: c.slug }} className="group block">
+                <motion.div whileHover={{ y: -6 }} className="aspect-square overflow-hidden rounded-3xl bg-muted shadow-soft">
+                  <img src={c.img} alt={c.title} loading="lazy" className="size-full object-cover transition duration-700 group-hover:scale-110" />
+                </motion.div>
+                <p className="mt-3 text-center text-base font-black transition-colors group-hover:text-accent sm:text-lg">{c.title}</p>
+              </Link>
+            </StaggerItem>
           ))}
+        </Stagger>
+        <div className="mt-8 text-center">
+          <Button variant="outline" size="lg" onClick={() => setShowMap((v) => !v)} aria-expanded={showMap}>
+            {showMap ? "إخفاء خريطة الأقسام" : "عرض خريطة الأقسام"}
+          </Button>
         </div>
+        {showMap && <div className="mt-8"><CategoryMap /></div>}
       </section>
 
       <section className="mx-auto max-w-[1400px] px-4 sm:px-6">
-        <div className="mb-8 flex flex-wrap items-center justify-center gap-2">
-          {tabs.map(([l], i) => (
-            <Button key={l} variant={i === tab ? "default" : "ghost"} onClick={() => setTab(i)}>{l}</Button>
-          ))}
-        </div>
+        <Reveal className="mb-8 flex justify-center">
+          <div role="tablist" className="grid w-full max-w-md grid-cols-4 gap-1 overflow-hidden rounded-full border border-border bg-card p-1">
+            {tabs.map(([l], i) => (
+              <Button variant="ghost" key={l} role="tab" aria-selected={i === tab} onClick={() => setTab(i)} className={`relative min-w-0 truncate whitespace-nowrap rounded-full px-1 py-2 text-xs font-bold sm:px-3 sm:text-sm transition-colors ${i === tab ? "text-primary-foreground" : "hover:text-accent"}`}>
+                {i === tab && <motion.span layoutId="home-tab" className="absolute inset-0 rounded-full bg-primary" transition={{ type: "spring", stiffness: 400, damping: 30 }} />}
+                <span className="relative">{l}</span>
+              </Button>
+            ))}
+          </div>
+        </Reveal>
         {products === null ? (
-          <div className="grid grid-cols-2 gap-4 md:grid-cols-5">{Array.from({ length: 5 }, (_, i) => <div key={i} className="aspect-[4/5] animate-pulse bg-muted" />)}</div>
+          <div className="grid grid-cols-2 gap-3 sm:gap-4 md:grid-cols-3 lg:grid-cols-5">{Array.from({ length: 5 }, (_, i) => <div key={i} className="aspect-[4/5] animate-pulse rounded-2xl bg-muted" />)}</div>
         ) : (
-          <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 lg:grid-cols-5">{products.map((p) => <ProductCard key={p.id} product={p} />)}</div>
+          <Stagger key={tab} className="grid grid-cols-2 gap-x-3 gap-y-8 md:grid-cols-3 md:gap-x-5 lg:grid-cols-5">{products.map((p) => <StaggerItem key={p.id}><ProductCard product={p} /></StaggerItem>)}</Stagger>
         )}
-        <div className="mt-10 text-center"><Button asChild variant="outline"><Link to="/shop">عرض كل المنتجات</Link></Button></div>
+        <Reveal className="mt-10 text-center"><Button asChild variant="outline"><Link to="/shop">عرض كل المنتجات</Link></Button></Reveal>
       </section>
 
-      <section className="mx-auto mt-20 grid max-w-[1400px] gap-6 px-4 sm:px-6 md:grid-cols-3">
+      <Stagger className="mx-auto mt-16 grid max-w-[1400px] gap-4 px-4 sm:mt-20 sm:grid-cols-3 sm:gap-6 sm:px-6">
         {[[Truck, "شحن لكل مصر", "توصيل لجميع المحافظات"], [Gift, "تغليف هدايا", "جاهزة تتهادى على طول"], [ShieldCheck, "استبدال سهل", "خلال 14 يوم من الاستلام"]].map(([I, t, d]) => {
           const Icon = I as typeof Truck;
           return (
-            <div key={t as string} className="flex items-center gap-4 rounded-2xl border border-border bg-card p-6 shadow-soft">
-              <Icon className="size-8 text-accent" />
-              <div><p className="font-black">{t as string}</p><p className="text-sm text-muted-foreground">{d as string}</p></div>
-            </div>
+            <StaggerItem key={t as string}>
+              <motion.div whileHover={{ y: -4 }} className="flex h-full min-w-0 items-center gap-4 rounded-2xl border border-border bg-card p-5 shadow-soft sm:p-6">
+                <Icon className="size-8 shrink-0 text-accent" />
+                <div className="min-w-0"><p className="font-black">{t as string}</p><p className="text-sm text-muted-foreground">{d as string}</p></div>
+              </motion.div>
+            </StaggerItem>
           );
         })}
-      </section>
+      </Stagger>
     </>
   );
 }

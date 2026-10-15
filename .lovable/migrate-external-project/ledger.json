@@ -1,0 +1,79 @@
+[
+  {
+    "capability": "code",
+    "source": "uploaded ZIP",
+    "outcome": "replace",
+    "status": "in_progress",
+    "next_action": "Import storefront"
+  },
+  {
+    "capability": "catalog/cart/checkout",
+    "source": "Shopify integration required by project",
+    "outcome": "preserve",
+    "status": "in_progress",
+    "next_action": "Adapt uploaded presentation to existing Shopify"
+  },
+  {
+    "capability": "schema",
+    "source": "historical Drizzle profiles/addresses",
+    "outcome": "migrate",
+    "status": "pending",
+    "next_action": "Inspect active account usage"
+  },
+  {
+    "capability": "records",
+    "source": "none supplied",
+    "outcome": "migrate",
+    "status": "pending",
+    "next_action": "Export only if active account data exists"
+  },
+  {
+    "capability": "auth identities/authorization",
+    "source": "generated integration and historical schema",
+    "outcome": "migrate",
+    "status": "pending",
+    "next_action": "Inspect active flows"
+  },
+  {
+    "capability": "uploaded file bytes",
+    "source": "hero.jpg and favicons",
+    "outcome": "import",
+    "status": "in_progress",
+    "next_action": "Store hero via assets"
+  },
+  {
+    "capability": "AI provider",
+    "source": "Lovable shopping assistant",
+    "outcome": "preserve",
+    "status": "in_progress",
+    "next_action": "Enable and verify AI"
+  },
+  {
+    "capability": "email/newsletter",
+    "source": "form without delivery",
+    "outcome": "preserve",
+    "status": "pending",
+    "next_action": "Report source nonfunctional form"
+  },
+  {
+    "capability": "public endpoints/callbacks/webhooks/schedules",
+    "source": "none detected",
+    "outcome": "preserve",
+    "status": "not_applicable",
+    "next_action": "No external callers detected"
+  },
+  {
+    "capability": "cutover",
+    "source": "unpublished preview",
+    "outcome": "preserve",
+    "status": "pending",
+    "next_action": "User publication"
+  },
+  {
+    "capability": "verification",
+    "source": "store and assistant",
+    "outcome": "verify",
+    "status": "pending",
+    "next_action": "Browser check"
+  }
+]
